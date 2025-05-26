@@ -1,14 +1,17 @@
 [
   {
     "name": "sdl2",
-    "url": "https://github.com/libsdl-org/SDL/releases/download/release-2.32.6/SDL2-2.32.6.zip"
+    "url": "https://github.com/libsdl-org/SDL/releases/download/release-2.32.6/SDL2-2.32.6.zip",
+    "build_type": "cmake"
   },
   {
     "name": "sdl3",
-    "url": "https://github.com/libsdl-org/SDL/releases/download/release-3.2.14/SDL3-3.2.14.zip"
+    "url": "https://github.com/libsdl-org/SDL/releases/download/release-3.2.14/SDL3-3.2.14.zip",
+    "build_type": "cmake"
   },
   {
     "name": "sdl-dev",
-    "url": "https://github.com/libsdl-org/SDL/archive/refs/heads/main.zip"
+    "url": "https://github.com/libsdl-org/SDL/archive/refs/heads/main.zip",
+    "build_type": "cmake"
   }
 ]
