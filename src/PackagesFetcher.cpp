@@ -50,8 +50,7 @@ std::vector<Package> Fetch() {
       std::string gitTag = SafeGetString(item, "git_tag");
       std::string cmakeFlags = SafeGetString(item, "cmake_flags");
 
-      if (name.empty() || repository.empty() || gitTag.empty() ||
-          cmakeFlags.empty()) {
+      if (name.empty() || repository.empty() || gitTag.empty()) {
         std::cerr << "Skipping invalid entry\n";
         continue;
       }
