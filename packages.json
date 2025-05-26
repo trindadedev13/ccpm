@@ -16,5 +16,11 @@
     "repository": "https://github.com/libsdl-org/SDL",
     "git_tag": "main",
     "cmake_flags": "-DSDL_STATIC=ON -DSDL_SHARED=OFF -DBUILD_SHARED_LIBS=OFF"
+  },
+  {
+    "name": "glfw",
+    "repository": "https://github.com/glfw/glfw",
+    "git_tag": "master",
+    "cmake_flags": ""
   }
 ]
