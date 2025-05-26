@@ -25,19 +25,24 @@ endif()
 
 set(SOURCES
     src/main.cpp
+    # src/PackageCompiler.cpp
     src/PackageInstaller.cpp
     src/PackageSearcher.cpp
     src/PackagesFetcher.cpp)
 
 find_package(curlpp REQUIRED)
-add_subdirectory(minizpp)
+find_package(Boost
+    REQUIRED
+    COMPONENTS
+    process)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
+    android-wordexp
     curlpp::curlpp_static
-    miniz::minizpp)
+    ${Boost_LIBRARIES})
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC

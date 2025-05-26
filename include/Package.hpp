@@ -8,7 +8,8 @@ namespace ccpm {
 
 struct Package {
   std::string name;
-  std::string url;
+  std::string repository;
+  std::string gitTag;
   buildtype::BuildType buildType;
 };
 

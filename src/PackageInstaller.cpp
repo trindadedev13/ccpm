@@ -1,53 +1,49 @@
 #include "PackageInstaller.hpp"
 
-#include <fstream>
+#include <filesystem>
 #include <iostream>
 #include <string>
-#include <vector>
 
-#include <Minizpp/Extractor.hpp>
-#include <curlpp/Easy.hpp>
-#include <curlpp/Options.hpp>
-#include <curlpp/cURLpp.hpp>
+#include <boost/process.hpp>
 
 #include "Package.hpp"
+
+namespace bp = boost::process;
+namespace fs = std::filesystem;
 
 namespace ccpm {
 
 namespace installer {
 
-// Download extract and install package
+// Download, compile and install package
 void Install(const Package& package) {
   Download(package);
-  std::string zipFile = package.name + ".zip";
-  if (std::filesystem::exists(zipFile)) {
-    minizpp::Extractor extractor{zipFile};
-    std::vector<std::string> files = extractor.ListFiles();
-    std::cout << "Files inside: " << zipFile << std::endl;
-    for (int i = 0; i < files.size(); ++i) {
-      std::cout << files[i] << std::endl;
-    }
-    extractor.ExtractTo(package.name);
-  }
+  // todo compile and install
 }
 
-// Download package from URL.
+// Download package.
+// Clones the package with git.
+// Uses boost process to access git clone
 void Download(const Package& package) {
   try {
-    curlpp::Cleanup cleanup{};
+    std::string cloneDir = package.name;
+    if (fs::exists(cloneDir))
+      fs::remove_all(cloneDir);
 
-    std::ofstream outFile{package.name + ".zip", std::ios::binary};
+    std::string gitPath = bp::search_path("git").string();
+    bp::child cloneProcess(gitPath, "clone", "--branch", package.gitTag,
+                           "--depth", "1", package.repository, cloneDir);
 
-    curlpp::Easy request{};
-    request.setOpt<curlpp::options::Url>(package.url);
-    request.setOpt<curlpp::options::WriteStream>(&outFile);
-    request.setOpt<curlpp::options::FollowLocation>(true);
-    request.perform();
+    cloneProcess.wait();
 
-  } catch (const curlpp::RuntimeError& e) {
-    std::cerr << "Runtime error: " << e.what() << std::endl;
-  } catch (const curlpp::LogicError& e) {
-    std::cerr << "Logic error: " << e.what() << std::endl;
+    if (cloneProcess.exit_code() == 0) {
+      std::cout << "Cloned successfully: " << package.repository << std::endl;
+    } else {
+      std::cerr << "Failed to clone: " << package.repository << std::endl;
+    }
+
+  } catch (const std::exception& e) {
+    std::cerr << "Failed to clone: " << e.what() << std::endl;
   }
 }
 

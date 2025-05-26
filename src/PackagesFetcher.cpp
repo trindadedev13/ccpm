@@ -19,6 +19,13 @@ namespace ccpm {
 
 namespace fetcher {
 
+std::string safeGetString(const nlohmann::json& obj, const std::string& key) {
+  if (!obj.contains(key) || !obj[key].is_string()) {
+    return "";
+  }
+  return obj[key].get<std::string>();
+}
+
 std::vector<Package> Fetch() {
   try {
     curlpp::Cleanup cleanup{};
@@ -38,10 +45,17 @@ std::vector<Package> Fetch() {
     std::vector<Package> packages = {};
 
     for (const auto& item : data) {
-      std::string name{item["name"]};
-      std::string url{item["url"]};
-      buildtype::BuildType buildType{item["build_type"]};
-      packages.push_back({name, url, buildType});
+      std::string name = safeGetString(item, "name");
+      std::string repository = safeGetString(item, "repository");
+      std::string gitTag = safeGetString(item, "git_tag");
+      buildtype::BuildType buildType = safeGetString(item, "build_type");
+
+      if (name.empty() || repository.empty() || gitTag.empty() ||
+          buildType.empty()) {
+        std::cerr << "Skipping invalid entry\n";
+        continue;
+      }
+      packages.push_back({name, repository, gitTag, buildType});
     }
 
     return packages;
