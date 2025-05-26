@@ -6,9 +6,11 @@ namespace ccpm {
 
 namespace installer {
 
-void Install(const Package&);
-
 void Download(const Package&);
+
+void Compile(const Package& package);
+
+void Install(const Package&);
 
 }  // namespace installer
 

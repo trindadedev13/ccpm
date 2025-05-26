@@ -11,9 +11,9 @@ namespace ccpm {
 
 CCPM_INLINE static void PrintHelp() {
   std::cout << "Usage:\n"
-            << "  install | -i     Install packages\n"
-            << "  uninstall | -u   Uninstall packages\n"
-            << "  search | -s      Search packages" << std::endl;
+            << "  install   | i     Install packages\n"
+            << "  uninstall | u     Uninstall packages\n"
+            << "  search    | s     Search packages" << std::endl;
 }
 
 }  // namespace ccpm
@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 
   std::string command = argv[1];
 
-  if (command == "install" || command == "-i") {
+  if (command == "install" || command == "i") {
     for (int i = 2; argv[i] != nullptr; ++i) {
       if (auto pkg = ccpm::searcher::Search(packages, argv[i]);
           pkg.has_value()) {
@@ -38,9 +38,9 @@ int main(int argc, char** argv) {
         std::cout << "Package not found: " << argv[i] << std::endl;
       }
     }
-  } else if (command == "uninstall" || command == "-u") {
+  } else if (command == "uninstall" || command == "u") {
     // todo
-  } else if (command == "search" || command == "-s") {
+  } else if (command == "search" || command == "s") {
     std::cout << "Searching...." << std::endl;
     ccpm::searcher::SearchAll(packages, argv);
   } else {

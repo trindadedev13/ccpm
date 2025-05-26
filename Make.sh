@@ -67,7 +67,7 @@ cd build
 
 # Create CMake Build files based on INSTALL option
 if [ "$INSTALL_P" = true ]; then
-  cmake .. -DAMALGAMATE_SOURCES=ON -DCMAKE_INSTALL_P_PREFIX=$HOME/../usr
+  cmake .. -DCMAKE_INSTALL_PREFIX=$HOME/../usr
 else
   cmake ..
 fi
