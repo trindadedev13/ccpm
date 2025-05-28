@@ -15,19 +15,17 @@ namespace ccpm {
 
 namespace installer {
 
+static std::string gitBin = bp::search_path("git").string();
+static std::string cmakeBin = bp::search_path("cmake").string();
+static std::string makeBin = bp::search_path("make").string();
+
 // Download package.
 // Clones the package with git.
 // Uses boost process to access git clone
-void Download(const Package& package) {
+void Download(const Package& package, const std::string& cloneDir) {
   try {
-    std::string cloneDir = package.name;
-    if (fs::exists(cloneDir))
-      fs::remove_all(cloneDir);
-
-    std::string gitPath = bp::search_path("git").string();
-    bp::child cloneProcess(gitPath, "clone", "--branch", package.gitTag,
+    bp::child cloneProcess(gitBin, "clone", "--branch", package.gitTag,
                            "--depth", "1", package.repository, cloneDir);
-
     cloneProcess.wait();
 
     if (cloneProcess.exit_code() == 0) {
@@ -42,15 +40,14 @@ void Download(const Package& package) {
   }
 }
 
+// Compiles the package with CMake & Makefile.
+// Uses boost process to access cmake & make.
 void Compile(const Package& package) {
   try {
     // gets the env to install lib
     bp::environment env = boost::this_process::environment();
     std::string homeEnv = env["HOME"].to_string();
 
-    // gets the make & cmake bin path to execute
-    std::string cmakeBin = bp::search_path("cmake").string();
-    std::string makeBin = bp::search_path("make").string();
     std::string packagePath = fs::current_path().string() + "/" + package.name;
     std::string packageBuildPath = packagePath + "/build";
 
@@ -93,17 +90,19 @@ void Compile(const Package& package) {
 // Download, compile and install package
 void Install(const Package& package) {
   try {
-    // gets the cmake bin path to execute
-    std::string cmakeBin = bp::search_path("cmake").string();
     std::string packagePath = fs::current_path().string() + "/" + package.name;
     std::string packageBuildPath = packagePath + "/build";
 
-    Download(package);
+    // delete clone to avoid cache errors or something like it
+    std::string cloneDir = package.name;
+    if (fs::exists(cloneDir))
+      fs::remove_all(cloneDir);
 
-    // Creates build dir AFTER Download
+    // create clone dir and build path for compile
     if (!fs::exists(packageBuildPath))
       fs::create_directories(packageBuildPath);
 
+    Download(package, cloneDir);
     Compile(package);
 
     // Run CMake Install (finally step)
