@@ -22,5 +22,11 @@
     "repository": "https://github.com/glfw/glfw",
     "git_tag": "master",
     "cmake_flags": ""
+  },
+  {
+    "name": "essentials-c",
+    "repository": "https://github.com/leonardopinezi/Essentials-C",
+    "git_tag": "main",
+    "cmake_flags": ""
   }
 ]
