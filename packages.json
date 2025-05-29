@@ -3,19 +3,19 @@
     "name": "sdl2",
     "repository": "https://github.com/libsdl-org/SDL/",
     "git_tag": "release-2.32.6",
-    "cmake_flags": "-DSDL_STATIC=ON -DSDL_SHARED=OFF -DBUILD_SHARED_LIBS=OFF"
+    "cmake_flags": "-DSDL_STATIC=ON -DSDL_SHARED=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_SYSTEM_NAME=Linux"
   },
   {
     "name": "sdl3",
     "repository": "https://github.com/libsdl-org/SDL",
     "git_tag": "release-3.2.14",
-    "cmake_flags": "-DSDL_STATIC=ON -DSDL_SHARED=OFF -DBUILD_SHARED_LIBS=OFF"
+    "cmake_flags": "-DSDL_STATIC=ON -DSDL_SHARED=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_SYSTEM_NAME=Linux"
   },
   {
     "name": "sdl-dev",
     "repository": "https://github.com/libsdl-org/SDL",
     "git_tag": "main",
-    "cmake_flags": "-DSDL_STATIC=ON -DSDL_SHARED=OFF -DBUILD_SHARED_LIBS=OFF"
+    "cmake_flags": "-DSDL_STATIC=ON -DSDL_SHARED=OFF -DBUILD_SHARED_LIBS=OFF -DCMAKE_SYSTEM_NAME=Linux"
   },
   {
     "name": "glfw",
